@@ -14,25 +14,15 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:nginx-v1.27
+        image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:nginx-v1.23
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: logs-storage
-          mountPath: /var/log/nginx  # Nginx가 NFS에 접근하는 경로
       - name: flask
-        image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:flask-v1.27
+        image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:flask-v1.23
         ports:
         - containerPort: 8000
-        volumeMounts:
-        - name: logs-storage
-          mountPath: /var/log/flask  # Flask 로그 경로
       imagePullSecrets:
       - name: image-pull-secret
-      volumes:
-      - name: logs-storage
-        persistentVolumeClaim:
-          claimName: test-claim-nfs  # NFS PVC의 이름
 ---
 apiVersion: v1
 kind: Service
