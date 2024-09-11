@@ -17,12 +17,19 @@ spec:
         image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:nginx-v1.23
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: nfs-storage     # 추가된 부분
+          mountPath: /usr/share/nginx/html  # 원하는 경로
       - name: flask
         image: 637423663330.dkr.ecr.ap-northeast-2.amazonaws.com/baggu-vm:flask-v1.23
         ports:
         - containerPort: 8000
       imagePullSecrets:
       - name: image-pull-secret
+      volumes:
+      - name: nfs-storage      # 추가된 부분
+        persistentVolumeClaim:
+          claimName: test-claim-nfs  # PVC 이름
 ---
 apiVersion: v1
 kind: Service
@@ -36,3 +43,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
+
